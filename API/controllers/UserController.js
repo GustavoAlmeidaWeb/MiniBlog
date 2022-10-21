@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 
 // User model
 const User = require('../models/User');
+const Post = require('../models/Post');
+const Comment = require('../models/Comment');
 
 // Helpers
 const generateToken = require('../helpers/generate-token');
@@ -22,7 +24,7 @@ module.exports = class UserController {
         try {
             
             const user = await User.create({name, email, password: passwordHash});
-            res.status(201).json({user});
+            res.status(201).json(user);
 
         } catch (error) {
 
@@ -64,11 +66,11 @@ module.exports = class UserController {
 
     static async delete(req, res) {
 
-        const user = req.user;
+        const { id } = req.user;
 
         try {
             
-            await User.destroy({ where: { id: user.id }});
+            await User.destroy({ where: { id }});
             res.status(200).json({ message: 'Conta excluída com sucesso.'});
 
         } catch (error) {

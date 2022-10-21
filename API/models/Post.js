@@ -10,7 +10,7 @@ const Post = db.define('Post', {
         require: true,
     },
     description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         require: true,
     },
     tags: {
