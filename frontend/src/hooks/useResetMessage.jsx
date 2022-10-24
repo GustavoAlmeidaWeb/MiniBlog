@@ -1,10 +1,10 @@
 // Redux
-import { resetStates } from "../slices/authSlice";
+import { resetAuthStates } from "../slices/authSlice";
 
 export const useResetAuthMessage = (dispatch) => {
     return () => {
         setTimeout(() => {
-            dispatch(resetStates());
+            dispatch(resetAuthStates());
         }, 2000)
     }
 }

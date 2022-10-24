@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 
-// Routes
+// Import Routes
 const router = require('./routes/Router.js');
 
 // DB Connection
@@ -25,12 +25,12 @@ app.use(cors({ credentials: true, origin: process.env.CORS_URL }));
 // Upload Dir
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
-// Routes
+// Use Routes
 app.use(router);
 
 // Sync DB
 conn.sync()
-    //.sync({ force: true }) // Força a recriação da tabela e elimina os dados
+    //.sync({ force: true }) // Força a recriação das tabelas e elimina os dados
     .then(() => {
         
         app.listen(port, () => {

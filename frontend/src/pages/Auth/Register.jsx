@@ -4,10 +4,17 @@ import { Link } from 'react-router-dom';
 import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap';
 import { register } from '../../slices/authSlice';
 
+// Components
+import Message from '../../components/Message';
+
+import { useResetAuthMessage } from '../../hooks/useResetMessage';
+
 const Register = () => {
 
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const resetMessage = useResetAuthMessage(dispatch);
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,6 +31,7 @@ const Register = () => {
     }
 
     dispatch(register(user));
+    resetMessage();
   }
 
   return (
@@ -31,7 +39,7 @@ const Register = () => {
       <Row>
         <div className="text-center mb-4">
           <h2 className='display-4 mb-3'>Faça seu cadastro</h2>
-          <p>Realize seu cadastro e comece a postar suas fotos...</p>
+          <p>Realize seu cadastro e comece a postar seus artigos...</p>
         </div>
         <Col md={{ span: 6, offset: 3 }}>
           <Form onSubmit={handleSubmit} className="mb-3">
@@ -51,6 +59,7 @@ const Register = () => {
               {!loading && <Button type="submit" size="lg" variant="primary">Cadastrar</Button>}
               {loading && <Button type="submit" size="lg" variant="primary" disabled>Aguarde...</Button>}
               {error && <Message msg={error} type='danger'/>}
+              {message && <Message msg={message} type='success'/>}
             </Form.Label>
           </Form>
           <p className="text-center">Já tem conta ?  <Link to="/login">Clique Aqui</Link></p>

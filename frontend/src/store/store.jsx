@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import authReducer from '../slices/authSlice';
+import postReducer from '../slices/postSlice';
 // import userReducer from '../slices/userSlice.js';
-// import photoReducer from '../slices/photoSlice.js';
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
+        post: postReducer,
         // user: userReducer,
-        // photo: photoReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
       serializableCheck: false,

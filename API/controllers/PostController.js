@@ -8,6 +8,7 @@ module.exports = class PostController {
 
         const posts = await Post.findAll({
             include: User,
+            order: [['createdAt', 'DESC']],
         });
 
         res.status(200).json(posts);
@@ -82,6 +83,7 @@ module.exports = class PostController {
         const posts = await Post.findAll({ 
             where: { UserId: id },
             include: Comment,
+            order: [['createdAt', 'DESC']],
         });
 
         res.status(200).json(posts);

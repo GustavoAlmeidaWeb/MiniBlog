@@ -5,6 +5,9 @@ import { api } from './utils/config';
 
 import { Container } from 'react-bootstrap';
 
+import { useAuth } from './hooks/useAuth';
+import { useSelector } from 'react-redux';
+
 // Components
 import NavBar from './components/Navbar';
 import Footer from './components/Footer';
@@ -13,11 +16,14 @@ import Footer from './components/Footer';
 import Home from './pages/Home/Home';
 import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
+import Post from './pages/Post/Post';
 
 
 function App() {
 
   const [result, setResult] = useState();
+  const { user } = useSelector((state) => state.auth);
+  const { auth } = useAuth();
 
   const getData = async (url) => {
 
@@ -42,8 +48,10 @@ function App() {
       <Container>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/posts/:id' element={auth ? <Post /> : <Navigate to='/login'/>} />
+          <Route path='/register' element={!auth ? <Register /> : <Navigate to='/'/>} />
+          <Route path='/login' element={!auth ? <Login /> : <Navigate to='/'/>} />
+          <Route path='/logout' element={<Navigate to='/' />} />
         </Routes>
       </Container>
       <Footer />
