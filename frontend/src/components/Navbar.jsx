@@ -12,6 +12,7 @@ const NavBar = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const reset = resetAuthStates();
 
   const handleLogout = () => {
     dispatch(logout());
@@ -32,7 +33,8 @@ const NavBar = () => {
             </>
           ) : (
             <>
-              <NavLink to='/posts/4'>Teste</NavLink>
+              <NavLink to='/dashboard'>Dashboard</NavLink>
+              <NavLink to='/my-profile'>Meu perfil</NavLink>
               <NavLink to='/logout' onClick={handleLogout}>Sair</NavLink>
             </>
           )}

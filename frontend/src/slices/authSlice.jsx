@@ -1,11 +1,8 @@
-import { setTokenHeaders } from '../utils/config';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from '../services/authService';
 
-const user = JSON.parse(localStorage.getItem('miniblog_user'));
-
 const initialState = {
-    user: user ? user : null,
+    user: null,
     error: false,
     success: false,
     loading: false,

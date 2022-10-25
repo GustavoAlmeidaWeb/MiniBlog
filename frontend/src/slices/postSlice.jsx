@@ -2,11 +2,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import postService from '../services/postService';
 
 const initialState = {
-    posts: [],
-    post: {},
-    error: false,
-    success: false,
-    loading: false,
+  posts: null,
+  post: null,
+  error: false,
+  success: false,
+  loading: false,
 };
 
 // Get a post by id
@@ -14,7 +14,7 @@ export const getPost = createAsyncThunk("post/getpost", async (id, thunkAPI) => 
 
   try {
 
-    const token = thunkAPI.getState().auth.user;
+    const token = thunkAPI.getState().auth.user.data.token;
     const res = await postService.getPost(id, token);
 
     return res.data;
@@ -43,6 +43,24 @@ export const getAllPosts = createAsyncThunk("posts/getposts", async (_, thunkAPI
 
   }
 });
+
+// Get a post by id
+export const getUserPosts = createAsyncThunk("post/userposts", async (_, thunkAPI) => {
+
+  try {
+
+    const token = thunkAPI.getState().auth.user.data.token;
+    const res = await postService.getUserPosts(token);
+
+    return res.data;
+
+  } catch (e) {
+
+    // Check for errors
+    return thunkAPI.rejectWithValue(e.response.data.errors[0]);
+
+  }
+})
 
 
 export const postSlice = createSlice({
@@ -73,6 +91,16 @@ export const postSlice = createSlice({
         state.error = false;
       })
       .addCase(getAllPosts.fulfilled, (state, action) => {
+          state.loading = false;
+          state.success = true;
+          state.error = null;
+          state.posts = action.payload;
+      })
+      .addCase(getUserPosts.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(getUserPosts.fulfilled, (state, action) => {
           state.loading = false;
           state.success = true;
           state.error = null;

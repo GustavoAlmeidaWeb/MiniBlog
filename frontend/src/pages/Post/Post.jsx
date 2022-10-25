@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getPost } from '../../slices/postSlice';
@@ -6,17 +6,20 @@ import { getPost } from '../../slices/postSlice';
 const Post = () => {
 
   const { post , error, loading } = useSelector((state) => state.post);
-  const post_detail = post.post;
-  const comments = post.comments;
+  // const { user } = useSelector((state) => state.auth);
   const { id } = useParams();
   const dispatch = useDispatch();
 
   // Load photo data
   useEffect(() => {
     dispatch(getPost(id));
-  }, [id])
+  }, [dispatch, id])
 
-  console.log(post_detail);
+  if(loading) {
+    return <p>Carregando...</p>
+  }
+
+  console.log(post);
 
   // comments.map((cmt) => {
   //   console.log(cmt.comment);
@@ -27,7 +30,12 @@ const Post = () => {
     <>
     {!loading && (
       <div>
-        <h1>{}</h1>
+        {post && (
+          <>
+            <h1>{post.post.title}</h1>
+            <p>{post.post.description}</p>
+          </>
+        )}
       </div>
     )}
     </>

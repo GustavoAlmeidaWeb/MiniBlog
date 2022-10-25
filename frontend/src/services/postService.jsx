@@ -1,29 +1,29 @@
 import axios from 'axios';
-import { api } from "../utils/config";
+import { api, setTokenHeaders } from "../utils/config";
 
 // Get all Posts
 const getAllPosts = async () => {
 
-  const res = await axios({
-    url: `${api}/posts`,
-    method: 'GET'
-  });
-
+  const res = await axios.get(`${api}/posts`);
   return res;
 }
 
 // Get a post by id
 const getPost = async (id, token) => {
 
-  const res = await axios({
-    url: `${api}/posts/${id}`,
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
+  setTokenHeaders(token);
+  const res = await axios.get(`${api}/posts/${id}`);
   return res;
+
+}
+
+// Get users posts
+const getUserPosts = async (token) => {
+
+  setTokenHeaders(token);
+  const res = await axios.get(`${api}/posts/dashboard`);
+  return res;
+
 }
 
 
@@ -31,6 +31,7 @@ const getPost = async (id, token) => {
 const postService = {
   getPost,
   getAllPosts,
+  getUserPosts,
 };
 
 export default postService;
