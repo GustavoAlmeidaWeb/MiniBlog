@@ -17,8 +17,6 @@ const NavBar = () => {
   const handleLogout = () => {
     dispatch(logout());
     dispatch(reset());
-
-    navigate('/');
   }
 
   return (

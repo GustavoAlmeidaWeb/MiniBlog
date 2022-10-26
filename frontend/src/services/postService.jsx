@@ -26,12 +26,41 @@ const getUserPosts = async (token) => {
 
 }
 
+// Create new post
+const postCreate = async (data, token) => {
+
+  setTokenHeaders(token);
+  const res = await axios.post(`${api}/posts/create`, data);
+  return res;
+
+}
+
+// Delete a post
+const deletePost = async (id, token) => {
+
+  setTokenHeaders(token);
+  const res = await axios.delete(`${api}/posts/delete/${id}`);
+  return res;
+
+}
+
+// Update a post
+const updatePost = async (id, data, token) => {
+
+  setTokenHeaders(token);
+  const res = await axios.put(`${api}/posts/update/${id}`, data);
+  return res;
+
+}
 
 // Methods exports
 const postService = {
   getPost,
   getAllPosts,
   getUserPosts,
+  postCreate,
+  deletePost,
+  updatePost,
 };
 
 export default postService;

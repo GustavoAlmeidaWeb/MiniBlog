@@ -63,6 +63,68 @@ export const getUserPosts = createAsyncThunk("post/userposts", async (_, thunkAP
 })
 
 
+// Create new post
+export const postCreate = createAsyncThunk("post/create", async (post, thunkAPI) => {
+
+  try {
+
+    const token = thunkAPI.getState().auth.user.data.token;
+    const res = await postService.postCreate(post, token);
+
+    return res.data;
+
+  } catch (e) {
+
+    // Check for errors
+    return thunkAPI.rejectWithValue(e.response.data.errors[0]);
+
+  }
+})
+
+
+// Delete a post
+export const deletePost = createAsyncThunk("post/delete", async (id, thunkAPI) => {
+
+  try {
+
+    const token = thunkAPI.getState().auth.user.data.token;
+    const res = await postService.deletePost(id, token);
+
+    return res.data;
+
+  } catch (e) {
+
+    // Check for errors
+    return thunkAPI.rejectWithValue(e.response.data.errors[0]);
+
+  }
+})
+
+
+// Update a post
+export const updatePost = createAsyncThunk("post/update", async (postData, thunkAPI) => {
+
+  // console.log(postData.get('id'));
+  const id = postData.get('id');
+
+  try {
+
+    const token = thunkAPI.getState().auth.user.data.token;
+    const res = await postService.updatePost(id, postData, token);
+
+    return res.data;
+
+  } catch (e) {
+
+    // Check for errors
+    return thunkAPI.rejectWithValue(e.response.data.errors[0]);
+
+  }
+})
+
+
+
+
 export const postSlice = createSlice({
   name: 'post',
   initialState,
@@ -105,6 +167,55 @@ export const postSlice = createSlice({
           state.success = true;
           state.error = null;
           state.posts = action.payload;
+      })
+      .addCase(postCreate.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(postCreate.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.post = action.payload;
+        state.message = 'Post publicado com sucesso.';
+      })
+      .addCase(postCreate.rejected, (state, action) => {
+        state.loading = false;
+        state.success = false;
+        state.error = action.payload;
+      })
+      .addCase(deletePost.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.post = action.payload;
+        state.message = 'Post excluído com sucesso.';
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.loading = false;
+        state.success = false;
+        state.error = action.payload;
+      })
+      .addCase(updatePost.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.post = action.payload;
+        console.log(action.payload);
+        state.message = 'Post atulizado com sucesso.';
+      })
+      .addCase(updatePost.rejected, (state, action) => {
+        state.loading = false;
+        state.success = false;
+        state.error = action.payload;
       })
   },
 });
