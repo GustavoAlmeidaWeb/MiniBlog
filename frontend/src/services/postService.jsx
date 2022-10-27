@@ -53,6 +53,15 @@ const updatePost = async (id, data, token) => {
 
 }
 
+// Insert a comment on post
+const commentCreate = async (id, comment, token) => {
+
+  setTokenHeaders(token);
+  const res = await axios.post(`${api}/posts/${id}/comment`, { comment });
+  return res;
+
+}
+
 // Methods exports
 const postService = {
   getPost,
@@ -61,6 +70,7 @@ const postService = {
   postCreate,
   deletePost,
   updatePost,
+  commentCreate,
 };
 
 export default postService;

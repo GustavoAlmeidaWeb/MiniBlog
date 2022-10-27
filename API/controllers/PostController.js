@@ -54,13 +54,13 @@ module.exports = class PostController {
 
         const currentPost =  await Post.findOne({ 
             where: { id },
-            include: User,
+            include: { model: User },
+            plain: true,
         });
         
         const currentComments = await Comment.findAll({ 
             where: { PostId: id }, 
-            raw: true,
-            include: User,
+            include: { model: User },
         });
 
         const post = {
@@ -92,7 +92,7 @@ module.exports = class PostController {
     static async updatePost(req, res) {
 
         const { id } = req.params;
-        const post = await Post.findOne({ where: { id }});
+        const post = await Post.findOne({ where: { id }, raw: true });
 
         if(!post) {
             return res.status(404).json({ errors: ['Nenhum dado encontrado.']});
@@ -121,9 +121,9 @@ module.exports = class PostController {
         }
 
         try {
-            
+
             await Post.update(post, { where: { id }});
-            res.status(200).json({ message: 'Post atualizado com sucesso.', post })
+            res.status(200).json({ message: 'Post atualizado com sucesso.', post });
 
         } catch (error) {
 

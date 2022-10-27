@@ -46,23 +46,27 @@ const EditPost = () => {
 
     e.preventDefault();
 
-    let postData = {
-      id,
+    let newPost = {
       title,
       description,
       tags,
     };
 
     if(imagePreview){
-      postData.imagepost = imagepost;
+      newPost.imagepost = imagepost;
     }
 
     // Build Form Data
     const formData = new FormData();
-    Object.keys(postData).forEach((key) => formData.append(key, postData[key]));
-    // formData.append('id', id);
+    Object.keys(newPost).forEach((key) => formData.append(key, newPost[key]));
 
-    await dispatch(updatePost(formData));
+    const sendData = {
+      id,
+      formData,
+    }
+
+    await dispatch(updatePost(sendData));
+    dispatch(getPost(id));
 
     resetMessage();
   }
@@ -82,7 +86,7 @@ const EditPost = () => {
   return (
     <Container>
       <Row>
-        {!loading && post && <>
+        {/* {!loading && post && <> */}
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Título da Publicação</Form.Label>
@@ -114,7 +118,7 @@ const EditPost = () => {
         </Form>
         {error && <Message type='danger' msg={error} />}
         {message && <Message type='success' msg={message} />}
-        </>}
+        {/* </>} */}
       </Row>
     </Container>
   )

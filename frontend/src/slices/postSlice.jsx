@@ -104,13 +104,12 @@ export const deletePost = createAsyncThunk("post/delete", async (id, thunkAPI) =
 // Update a post
 export const updatePost = createAsyncThunk("post/update", async (postData, thunkAPI) => {
 
-  // console.log(postData.get('id'));
-  const id = postData.get('id');
+  const { id, formData } = postData;
 
   try {
 
     const token = thunkAPI.getState().auth.user.data.token;
-    const res = await postService.updatePost(id, postData, token);
+    const res = await postService.updatePost(id, formData, token);
 
     return res.data;
 
@@ -123,6 +122,25 @@ export const updatePost = createAsyncThunk("post/update", async (postData, thunk
 })
 
 
+// Create comment a post
+export const commentCreate = createAsyncThunk("post/comment", async (commentData, thunkAPI) => {
+
+  const { id, comment } = commentData;
+
+  try {
+
+    const token = thunkAPI.getState().auth.user.data.token;
+    const res = await postService.commentCreate(id, comment, token);
+
+    return res.data;
+
+  } catch (e) {
+
+    // Check for errors
+    return thunkAPI.rejectWithValue(e.response.data.errors[0]);
+
+  }
+})
 
 
 export const postSlice = createSlice({
@@ -130,43 +148,43 @@ export const postSlice = createSlice({
   initialState,
   reducers: {
       resetPostStates: (state) => {
-          state.loading = false;
-          state.error = false;
-          state.success = false;
-          state.message = null;
+        state.loading = false;
+        state.error = false;
+        state.success = false;
+        state.message = null;
       },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getPost.pending, (state) => {
-          state.loading = true;
-          state.error = false;
+        state.loading = true;
+        state.error = false;
       })
       .addCase(getPost.fulfilled, (state, action) => {
-          state.loading = false;
-          state.success = true;
-          state.error = null;
-          state.post = action.payload;
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.post = action.payload;
       })
       .addCase(getAllPosts.pending, (state) => {
         state.loading = true;
         state.error = false;
       })
       .addCase(getAllPosts.fulfilled, (state, action) => {
-          state.loading = false;
-          state.success = true;
-          state.error = null;
-          state.posts = action.payload;
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.posts = action.payload;
       })
       .addCase(getUserPosts.pending, (state) => {
         state.loading = true;
         state.error = false;
       })
       .addCase(getUserPosts.fulfilled, (state, action) => {
-          state.loading = false;
-          state.success = true;
-          state.error = null;
-          state.posts = action.payload;
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.posts = action.payload;
       })
       .addCase(postCreate.pending, (state) => {
         state.loading = true;
@@ -209,10 +227,24 @@ export const postSlice = createSlice({
         state.success = true;
         state.error = null;
         state.post = action.payload;
-        console.log(action.payload);
-        state.message = 'Post atulizado com sucesso.';
+        state.message = 'Post atualizado com sucesso.';
       })
       .addCase(updatePost.rejected, (state, action) => {
+        state.loading = false;
+        state.success = false;
+        state.error = action.payload;
+      })
+      .addCase(commentCreate.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(commentCreate.fulfilled, (state) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.message = 'Comentário adicionado com sucesso.';
+      })
+      .addCase(commentCreate.rejected, (state, action) => {
         state.loading = false;
         state.success = false;
         state.error = action.payload;

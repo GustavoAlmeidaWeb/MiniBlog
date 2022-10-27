@@ -26,7 +26,7 @@ const NewPost = () => {
 
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
 
     e.preventDefault();
 
@@ -43,7 +43,7 @@ const NewPost = () => {
 
     formData.append('post', postFormData);
 
-    dispatch(postCreate(formData));
+    await dispatch(postCreate(formData));
     dispatch(getUserPosts());
 
     setTitle('');
