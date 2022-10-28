@@ -123,7 +123,7 @@ export const updatePost = createAsyncThunk("post/update", async (postData, thunk
 
 
 // Create comment a post
-export const commentCreate = createAsyncThunk("post/comment", async (commentData, thunkAPI) => {
+export const commentCreate = createAsyncThunk("comment/create", async (commentData, thunkAPI) => {
 
   const { id, comment } = commentData;
 

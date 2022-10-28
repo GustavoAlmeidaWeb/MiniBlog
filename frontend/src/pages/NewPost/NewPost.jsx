@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { postCreate, getUserPosts } from '../../slices/postSlice';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
 import Message from '../../components/Message';
+import { useEffect } from 'react';
 
 const NewPost = () => {
 
@@ -22,11 +23,10 @@ const NewPost = () => {
 
     const img = e.target.files[0];
     setImagePost(img);
-    // console.log(name);
 
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
 
     e.preventDefault();
 
@@ -39,21 +39,30 @@ const NewPost = () => {
 
     // Build Form Data
     const formData = new FormData();
-    const postFormData = Object.keys(postData).forEach((key) => formData.append(key, postData[key]));
+    Object.keys(postData).forEach((key) => formData.append(key, postData[key]));
 
-    formData.append('post', postFormData);
-
-    await dispatch(postCreate(formData));
-    dispatch(getUserPosts());
-
-    setTitle('');
-    setDescription('');
-    setTags('');
-    setImagePost('');
+    dispatch(postCreate(formData));
 
     resetMessage();
-    navigate('/dashboard');
+
   }
+
+  useEffect(() => {
+
+    if(message) {
+      setTitle('');
+      setDescription('');
+      setTags('');
+      setImagePost('');
+
+      dispatch(getUserPosts());
+
+      setTimeout(() => {
+        navigate('/dashboard')
+      }, 2000)
+
+    }
+  }, [message]);
 
   return (
     <Container>

@@ -38,7 +38,7 @@ module.exports = class PostController {
         try {
 
             const post = await Post.create(newPost);
-            res.status(201).json(post);
+            res.status(201).json({ post, comments: [] });
             
         } catch (error) {
          

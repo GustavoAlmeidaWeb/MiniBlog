@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { commentCreate, getPost } from '../../slices/postSlice';
+import { getPost, commentCreate } from '../../slices/postSlice';
 import { Container, Form, Button } from 'react-bootstrap';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
 import Message from '../../components/Message';
@@ -17,8 +17,19 @@ const Post = () => {
 
   // Load photo data
   useEffect(() => {
+
     dispatch(getPost(id));
+
   }, [dispatch, id]);
+
+  useEffect(() => {
+
+    if(message) {
+      dispatch(getPost(id));
+      setComment('');
+    }
+
+  },[message]);
 
   const handleSubmit = (e) => {
 
@@ -30,11 +41,8 @@ const Post = () => {
     }
 
     dispatch(commentCreate(commentData));
-    dispatch(getPost(id));
-
-    setComment('');
-
     resetMessage();
+
   }
 
   if(loading) {
@@ -73,10 +81,10 @@ const Post = () => {
               </Form.Group>
               <Button variant="primary" type="submit">Enviar</Button>
             </Form>
+            {error && <Message msg={error} type="danger" />}
+            {message && <Message msg={message} type="success" />}
           </>
         )}
-        {error && <Message msg={error} type="danger" />}
-        {message && <Message msg={message} type="success" />}
       </div>
     </Container>
   )

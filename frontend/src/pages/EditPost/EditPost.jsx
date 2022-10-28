@@ -30,19 +30,24 @@ const EditPost = () => {
   // Load post data on fields
   useEffect(() => {
 
-    if(post){
+    if(post.post){
 
       setTitle(post.post.title);
       setDescription(post.post.description);
       setTags(post.post.tags);
       setImagePost(post.post.imagepost);
 
+    } else {
+
+      setTitle(post.title);
+      setDescription(post.description);
+      setTags(post.tags);
+      setImagePost(post.imagepost);
+
     }
   }, [post]);
 
-
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
 
     e.preventDefault();
 
@@ -65,8 +70,8 @@ const EditPost = () => {
       formData,
     }
 
-    await dispatch(updatePost(sendData));
-    dispatch(getPost(id));
+    dispatch(updatePost(sendData));
+    // dispatch(getPost(id));
 
     resetMessage();
   }

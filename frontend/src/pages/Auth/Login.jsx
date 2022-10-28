@@ -1,7 +1,7 @@
 // Bootstrap
 import { Container, Row, Col, Form, Button, FloatingLabel } from 'react-bootstrap';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // Components
 import Message from '../../components/Message';
@@ -21,7 +21,6 @@ const Login = () => {
   const { loading, error, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const resetMessage = useResetAuthMessage(dispatch);
-  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,9 +38,6 @@ const Login = () => {
     // clean all states
     resetMessage();
 
-    setTimeout(() => {
-      navigate('/');
-    }, 2000);
   }
 
   return (
