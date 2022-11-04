@@ -58,7 +58,7 @@ const Post = () => {
             <h5>Autor: {post.post.User.name}</h5>
             <p>{post.post.description}</p>
             <div>
-              <h3 className='my-3'>Comentários</h3>
+              <h3 className='my-3'>{post.comments.length} Comentário(s)</h3>
               {post.comments.length > 0 ? (
                 <ul>
                   {post.comments.map((cmt) => (

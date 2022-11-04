@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProfile } from '../../slices/userSlice';
+import { getProfile, updateProfile } from '../../slices/userSlice';
 import { Container, Row, Form, Button } from 'react-bootstrap';
 import { uploads } from '../../utils/config';
+import { useResetUserMessage } from '../../hooks/useResetMessage';
+import Message from '../../components/Message';
 
 const Profile = () => {
 
   const { user, loading, message, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const resetMesage = useResetUserMessage(dispatch);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -36,6 +39,7 @@ const Profile = () => {
 
   const handleFile = (e) => {
     setImagePreview(URL.createObjectURL(e.target.files[0]));
+    setImageProfile(e.target.files[0]);
   }
 
   const handleSubmit = (e) => {
@@ -47,6 +51,23 @@ const Profile = () => {
       confirmpassword,
     }
 
+    if(imagePreview){
+      newUser.imageprofile = imageprofile;
+    }
+
+    // Build Form Data
+    const formData = new FormData();
+    Object.keys(newUser).forEach((key) => formData.append(key, newUser[key]));
+
+    dispatch(updateProfile(formData));
+
+    resetMesage();
+
+    // States Reset
+    setImagePreview('');
+    setPassword('');
+    setConfirmPassword('');
+
   }
 
   if(loading) {
@@ -57,6 +78,7 @@ const Profile = () => {
     <Container>
       <Row>
       {user.data && (
+        <>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             {imageprofile ? (
@@ -87,6 +109,9 @@ const Profile = () => {
           {!loading && <Button className="btn btn-primary" type="submit">Atualizar Perfil</Button>}
           {loading && <Button className="btn btn-primary" type="submit" disabled>Aguarde...</Button>}
         </Form>
+        {error && <Message msg={error} type="danger" />}
+        {message && <Message msg={message} type="success" />}
+        </>
       )}
       </Row>
     </Container>

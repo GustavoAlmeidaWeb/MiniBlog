@@ -30,22 +30,18 @@ const EditPost = () => {
   // Load post data on fields
   useEffect(() => {
 
-    if(post.post){
+    if(post !== null){
 
       setTitle(post.post.title);
       setDescription(post.post.description);
       setTags(post.post.tags);
       setImagePost(post.post.imagepost);
 
-    } else {
-
-      setTitle(post.title);
-      setDescription(post.description);
-      setTags(post.tags);
-      setImagePost(post.imagepost);
-
     }
+
   }, [post]);
+
+  console.log(post);
 
   const handleSubmit = (e) => {
 
@@ -71,7 +67,6 @@ const EditPost = () => {
     }
 
     dispatch(updatePost(sendData));
-    // dispatch(getPost(id));
 
     resetMessage();
   }

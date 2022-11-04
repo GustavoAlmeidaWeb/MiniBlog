@@ -27,6 +27,24 @@ export const getProfile = createAsyncThunk('user/profile', async (_, thunkAPI) =
 
 });
 
+// Get user profile
+export const updateProfile = createAsyncThunk('user/update', async (userData, thunkAPI) => {
+
+  try {
+
+    const token = thunkAPI.getState().auth.user.data.token;
+    const res = await userService.updateProfile(userData, token);
+    return res;
+
+  } catch (e) {
+
+    // Check for errors
+    return thunkAPI.rejectWithValue(e.response.data.errors[0]);
+
+  }
+
+});
+
 
 export const userSlice = createSlice({
   name: 'user',
@@ -42,25 +60,31 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getProfile.pending, (state) => {
-          state.loading = true;
-          state.error = false;
+        state.loading = true;
+        state.error = false;
       })
       .addCase(getProfile.fulfilled, (state, action) => {
-          state.loading = false;
-          state.success = true;
-          state.error = null;
-          state.user = action.payload;
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.user = action.payload;
       })
-      // .addCase(getAllPosts.pending, (state) => {
-      //   state.loading = true;
-      //   state.error = false;
-      // })
-      // .addCase(getAllPosts.fulfilled, (state, action) => {
-      //     state.loading = false;
-      //     state.success = true;
-      //     state.error = null;
-      //     state.posts = action.payload;
-      // })
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.user = action.payload;
+        state.message = 'Perfil atualizado com sucesso.';
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.success = false;
+        state.error = action.payload;
+      })
   },
 });
 
