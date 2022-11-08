@@ -35,6 +35,7 @@ const Login = () => {
     }
 
     dispatch(login(user));
+
     // clean all states
     resetMessage();
 

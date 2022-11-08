@@ -14,6 +14,7 @@ const Home = () => {
     dispatch(getAllPosts());
   }, [dispatch]);
 
+  console.log(localStorage.getItem('miniblog_user'));
 
   return (
     <div>

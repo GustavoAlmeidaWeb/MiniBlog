@@ -10,9 +10,14 @@ export const useAuth = () => {
     useEffect(() => {
 
         if(user){
+
+          if(localStorage.getItem('miniblog_user')) {
             setAuth(true);
-        } else {
+          } else {
             setAuth(false);
+          }
+        } else {
+          setAuth(false);
         }
 
         setLoading(false);

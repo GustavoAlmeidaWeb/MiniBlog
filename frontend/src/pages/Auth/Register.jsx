@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap';
 import { register } from '../../slices/authSlice';
 
@@ -14,6 +14,7 @@ const Register = () => {
   const { loading, error, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const resetMessage = useResetAuthMessage(dispatch);
+  const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -31,8 +32,25 @@ const Register = () => {
     }
 
     dispatch(register(user));
+
     resetMessage();
   }
+
+  useEffect(() => {
+
+    setName('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+
+    setTimeout(() => {
+
+      navigate('/login');
+
+    }, 2000);
+
+
+  },[message]);
 
   return (
     <Container>

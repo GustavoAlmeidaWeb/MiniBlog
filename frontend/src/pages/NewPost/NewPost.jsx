@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Row, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { postCreate, getUserPosts } from '../../slices/postSlice';
+import { postCreate, getUserPosts, getPost } from '../../slices/postSlice';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
 import Message from '../../components/Message';
 import { useEffect } from 'react';
 
 const NewPost = () => {
 
-  const { error, message, loading } = useSelector((state) => state.post);
+  const { post, error, message, loading } = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const resetMessage = useResetPostMessage(dispatch);
@@ -56,6 +56,7 @@ const NewPost = () => {
       setImagePost('');
 
       dispatch(getUserPosts());
+      dispatch(getPost(post.post.id));
 
       setTimeout(() => {
         navigate('/dashboard')

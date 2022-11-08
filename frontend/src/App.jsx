@@ -4,7 +4,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
 import { useAuth } from './hooks/useAuth';
-import { useSelector } from 'react-redux';
 
 // Components
 import NavBar from './components/Navbar';
@@ -24,7 +23,6 @@ import NewPost from './pages/NewPost/NewPost';
 
 function App() {
 
-  const { user } = useSelector((state) => state.auth);
   const { auth, loading } = useAuth();
 
   if(loading) {

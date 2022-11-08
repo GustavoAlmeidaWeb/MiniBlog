@@ -15,7 +15,7 @@ const Post = () => {
 
   const [comment, setComment] = useState('');
 
-  // Load photo data
+  // Load post data
   useEffect(() => {
 
     dispatch(getPost(id));
@@ -48,6 +48,7 @@ const Post = () => {
   if(loading) {
     return <p>Carregando...</p>
   }
+  console.log(post);
 
   return (
     <Container>
