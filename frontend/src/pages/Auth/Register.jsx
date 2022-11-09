@@ -14,7 +14,6 @@ const Register = () => {
   const { loading, error, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const resetMessage = useResetAuthMessage(dispatch);
-  const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -43,17 +42,10 @@ const Register = () => {
     setPassword('');
     setConfirmPassword('');
 
-    setTimeout(() => {
-
-      navigate('/login');
-
-    }, 2000);
-
-
   },[message]);
 
   return (
-    <Container>
+    <Container className="my-4">
       <Row>
         <div className="text-center mb-4">
           <h2 className='display-4 mb-3'>Faça seu cadastro</h2>
@@ -74,8 +66,8 @@ const Register = () => {
               <Form.Control type="password" placeholder="Confimar Senha" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmpassword || ''} />
             </FloatingLabel>
             <Form.Label className="d-grid">
-              {!loading && <Button type="submit" size="lg" variant="primary">Cadastrar</Button>}
-              {loading && <Button type="submit" size="lg" variant="primary" disabled>Aguarde...</Button>}
+              {!loading && <Button type="submit" size="lg" variant="info">Cadastrar</Button>}
+              {loading && <Button type="submit" size="lg" variant="info" disabled>Aguarde...</Button>}
               {error && <Message msg={error} type='danger'/>}
               {message && <Message msg={message} type='success'/>}
             </Form.Label>

@@ -30,24 +30,26 @@ function App() {
   }
 
   return (
-    <Container fluid className="App">
+    <>
       <NavBar />
-      <Container>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/posts/:id' element={auth ? <Post /> : <Navigate to='/login'/>} />
-          <Route path='/posts/edit/:id' element={auth ? <EditPost /> : <Navigate to='/login'/>} />
-          <Route path='/posts/create' element={auth ? <NewPost /> : <Navigate to='/login'/>} />
-          <Route path='/dashboard' element={auth ? <Dashboard /> : <Navigate to='/login'/>} />
-          <Route path='/my-profile' element={auth ? <Profile /> : <Navigate to='/login'/>} />
-          <Route path='/register' element={!auth ? <Register /> : <Navigate to='/'/>} />
-          <Route path='/login' element={!auth ? <Login /> : <Navigate to='/'/>} />
-          <Route path='/logout' element={<Navigate to='/' />} />
-          <Route path='*' element={<Notfound />} />
-        </Routes>
+      <Container fluid className="App py-4">
+        <Container>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/posts/:id' element={auth ? <Post /> : <Navigate to='/login'/>} />
+            <Route path='/posts/edit/:id' element={auth ? <EditPost /> : <Navigate to='/login'/>} />
+            <Route path='/posts/create' element={auth ? <NewPost /> : <Navigate to='/login'/>} />
+            <Route path='/dashboard' element={auth ? <Dashboard /> : <Navigate to='/login'/>} />
+            <Route path='/my-profile' element={auth ? <Profile /> : <Navigate to='/login'/>} />
+            <Route path='/register' element={!auth ? <Register /> : <Navigate to='/'/>} />
+            <Route path='/login' element={!auth ? <Login /> : <Navigate to='/'/>} />
+            <Route path='/logout' element={<Navigate to='/' />} />
+            <Route path='*' element={<Notfound />} />
+          </Routes>
+        </Container>
       </Container>
       <Footer />
-    </Container>
+    </>
   )
 }
 

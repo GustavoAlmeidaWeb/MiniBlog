@@ -42,7 +42,7 @@ const Login = () => {
   }
 
   return (
-    <Container>
+    <Container className="my-4">
       <Row>
         <div className="text-center mb-4">
           <h2 className='display-4 mb-3'>Faça seu Login</h2>
@@ -57,8 +57,8 @@ const Login = () => {
               <Form.Control type="password" placeholder="Senha" onChange={(e) => setPassword(e.target.value)} value={password || ''} />
             </FloatingLabel>
             <Form.Label className="d-grid">
-              {!loading && <Button type="submit" size="lg" variant="primary">Entrar</Button>}
-              {loading && <Button type="submit" size="lg" variant="primary" disabled>Aguarde...</Button>}
+              {!loading && <Button type="submit" size="lg" variant="info">Entrar</Button>}
+              {loading && <Button type="submit" size="lg" variant="info" disabled>Aguarde...</Button>}
               {error && <Message msg={error} type='danger'/>}
               {message && <Message msg={message} type='success'/>}
             </Form.Label>
