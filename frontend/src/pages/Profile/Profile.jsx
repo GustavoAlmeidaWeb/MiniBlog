@@ -106,8 +106,8 @@ const Profile = () => {
             <Form.Label>Confirme a Senha</Form.Label>
             <Form.Control type="password" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmpassword || ''} />
           </Form.Group>
-          {!loading && <Button className="btn btn-primary" type="submit">Atualizar Perfil</Button>}
-          {loading && <Button className="btn btn-primary" type="submit" disabled>Aguarde...</Button>}
+          {!loading && <Button className="btn btn-info" type="submit">Atualizar Perfil</Button>}
+          {loading && <Button className="btn btn-info" type="submit" disabled>Aguarde...</Button>}
         </Form>
         {error && <Message msg={error} type="danger" />}
         {message && <Message msg={message} type="success" />}

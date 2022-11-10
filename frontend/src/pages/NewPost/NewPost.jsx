@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Row, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { postCreate, getUserPosts, getPost } from '../../slices/postSlice';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
 import Message from '../../components/Message';
-import { useEffect } from 'react';
 
 const NewPost = () => {
 
@@ -90,8 +89,8 @@ const NewPost = () => {
             <Form.Control type="file" onChange={handleFile} />
           </Form.Group>
 
-          {!loading && <Button variant="primary" type="submit">Publicar</Button>}
-          {loading && <Button variant="primary" type="submit" disabled>Aguarde...</Button>}
+          {!loading && <Button variant="info" type="submit">Publicar</Button>}
+          {loading && <Button variant="info" type="submit" disabled>Aguarde...</Button>}
         </Form>
         {error && <Message type='danger' msg={error} />}
         {message && <Message type='success' msg={message} />}

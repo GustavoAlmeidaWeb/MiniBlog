@@ -80,7 +80,7 @@ const Post = () => {
                 <Form.Label>Fazer comentário</Form.Label>
                 <Form.Control as="textarea" rows={3} onChange={(e) => setComment(e.target.value)} value={comment || ''} />
               </Form.Group>
-              <Button variant="primary" type="submit">Enviar</Button>
+              <Button variant="info" type="submit">Enviar</Button>
             </Form>
             {error && <Message msg={error} type="danger" />}
             {message && <Message msg={message} type="success" />}
@@ -91,4 +91,4 @@ const Post = () => {
   )
 }
 
-export default Post
+export default Post;

@@ -35,7 +35,7 @@ function App() {
       <Container fluid className="App py-4">
         <Container>
           <Routes>
-            <Route path='/' element={<Home />} />
+            <Route path='/' element={<Home auth={auth} />} />
             <Route path='/posts/:id' element={auth ? <Post /> : <Navigate to='/login'/>} />
             <Route path='/posts/edit/:id' element={auth ? <EditPost /> : <Navigate to='/login'/>} />
             <Route path='/posts/create' element={auth ? <NewPost /> : <Navigate to='/login'/>} />
