@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllPosts } from '../../slices/postSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getAllPosts } from '../../slices/postSlice';
 import { Card, Container } from 'react-bootstrap';
 import { uploads } from '../../utils/config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

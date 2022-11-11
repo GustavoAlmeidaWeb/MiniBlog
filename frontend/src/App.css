@@ -1,3 +1,6 @@
 img {
   max-width: 100%;
 }
+.App {
+  min-height: 70.8vh;
+}

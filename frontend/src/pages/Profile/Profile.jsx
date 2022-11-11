@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile, updateProfile } from '../../slices/userSlice';
-import { Container, Row, Form, Button } from 'react-bootstrap';
+import { Container, Row, Form, Button, Col } from 'react-bootstrap';
 import { uploads } from '../../utils/config';
 import { useResetUserMessage } from '../../hooks/useResetMessage';
 import Message from '../../components/Message';
@@ -76,7 +76,10 @@ const Profile = () => {
 
   return (
     <Container>
-      <Row>
+      <Col className='d-flex align-items-center justify-content-between py-3 border-bottom'>
+        <h2 className='display-5'>Meu Perfil</h2>
+      </Col>
+      <Row className='py-3'>
       {user.data && (
         <>
         <Form onSubmit={handleSubmit}>
