@@ -113,8 +113,8 @@ const EditPost = () => {
 
         </Form.Group>
 
-        {!loading && <Button variant="primary" type="submit">Atualizar Post</Button>}
-        {loading && <Button variant="primary" type="submit" disabled>Aguarde...</Button>}
+        {!loading && <Button variant="info" type="submit">Atualizar Post</Button>}
+        {loading && <Button variant="info" type="submit" disabled>Aguarde...</Button>}
         </Form>
         {error && <Message type='danger' msg={error} />}
         {message && <Message type='success' msg={message} />}

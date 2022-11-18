@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserPosts, deletePost } from '../../slices/postSlice';
 import { Link } from 'react-router-dom';
-import { Container, Col } from 'react-bootstrap';
+import { Col, Row, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
 import Message from '../../components/Message';
@@ -16,7 +16,6 @@ const Dashboard = () => {
   useEffect(() => {
 
     dispatch(getUserPosts());
-    console.log('dispatch dashboard...')
 
   }, [dispatch]);
 
@@ -34,7 +33,7 @@ const Dashboard = () => {
 
 
   return (
-    <Container>
+    <>
       <Col className='d-flex align-items-center justify-content-between py-3 border-bottom'>
         <h2 className='display-5'>Dashboard</h2>
         <div className="action-new-post">
@@ -42,17 +41,23 @@ const Dashboard = () => {
         </div>
       </Col>
       {posts && (
-        <ul>
+        <>
           {posts.length > 0 ? (
           <>
             {posts.map((post) => (
-              <li key={post.id}>
-                <h4>{post.title}</h4>
-                <div className="actions">
-                  <Link to={`/posts/edit/${post.id}`}>Editar</Link>
-                  <button onClick={() => handleDelete(post.id)}>Excluir</button>
-                </div>
-              </li>
+              <Row key={post.id} className="py-3 border-bottom">
+                <Col xl={8} md={8} sm={8} xs={8}>
+                  <h4 className='h4'>{post.title}</h4>
+                </Col>
+                <Col xl={4} md={4} sm={4} xs={4} className="d-flex justify-content-end">
+                  <OverlayTrigger placement="top" overlay={<Tooltip>Editar Post</Tooltip>}>
+                    <Link className="btn btn-info mx-2" to={`/posts/edit/${post.id}`}><FontAwesomeIcon icon="fa-solid fa-pencil" /></Link>
+                  </OverlayTrigger>
+                  <OverlayTrigger placement="top" overlay={<Tooltip>Excluir Post</Tooltip>}>
+                    <button className="btn btn-danger" onClick={() => handleDelete(post.id)}><FontAwesomeIcon icon="fa-solid fa-trash-can" /></button>
+                  </OverlayTrigger>
+                </Col>
+              </Row>
             ))}
           </>
           ) : (
@@ -60,12 +65,12 @@ const Dashboard = () => {
             <h3 className='h5'>Nenhuma publicação por aqui, crie seu primeiro post...</h3>
           </Col>
           )}
-        </ul>
+        </>
       )}
       {message && <Message msg={message} type='success' />}
       {error && <Message msg={error} type='danger' />}
-    </Container>
+    </>
   )
 }
 
-export default Dashboard
+export default Dashboard;

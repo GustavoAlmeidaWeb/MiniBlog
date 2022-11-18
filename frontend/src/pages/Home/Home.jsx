@@ -8,18 +8,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Home = ({ auth }) => {
 
-  const { posts, loading, error } = useSelector((state) => state.post);
+  const { posts, loading } = useSelector((state) => state.post);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllPosts());
-  }, [dispatch]);
 
-  if(loading) {
+    dispatch(getAllPosts());
+
+  },[dispatch]);
+
+  if(loading || !posts || !posts[0].User) {
     return <p>Carregando...</p>;
   }
-
-  console.log(posts);
 
   return (
     <Container>
