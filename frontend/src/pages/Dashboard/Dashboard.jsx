@@ -6,6 +6,7 @@ import { Col, Row, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
 import Message from '../../components/Message';
+import Loading from '../../components/Loading';
 
 const Dashboard = () => {
 
@@ -28,7 +29,7 @@ const Dashboard = () => {
   }
 
   if(loading) {
-    return <p>Carregando...</p>
+    return <Loading />;
   }
 
 

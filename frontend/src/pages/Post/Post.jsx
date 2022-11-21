@@ -5,6 +5,7 @@ import { getPost, commentCreate } from '../../slices/postSlice';
 import { Container, Form, Button } from 'react-bootstrap';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
 import Message from '../../components/Message';
+import Loading from '../../components/Loading';
 
 const Post = () => {
 
@@ -46,9 +47,8 @@ const Post = () => {
   }
 
   if(loading) {
-    return <p>Carregando...</p>
+    return <Loading />;
   }
-  console.log(post);
 
   return (
     <Container>

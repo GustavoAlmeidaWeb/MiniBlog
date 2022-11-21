@@ -1,16 +1,29 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getProfile, updateProfile } from '../../slices/userSlice';
-import { Container, Row, Form, Button, Col } from 'react-bootstrap';
+// Images URL
 import { uploads } from '../../utils/config';
+
+// Hooks + Router
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useResetUserMessage } from '../../hooks/useResetMessage';
+
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfile, updateProfile, deleteProfile } from '../../slices/userSlice';
+
+// Bootstrap + FontAwesome
+import { Container, Row, Form, Button, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+// Components
 import Message from '../../components/Message';
+import Loading from '../../components/Loading';
 
 const Profile = () => {
 
   const { user, loading, message, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const resetMesage = useResetUserMessage(dispatch);
+  const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,6 +31,7 @@ const Profile = () => {
   const [confirmpassword, setConfirmPassword] = useState('');
   const [imageprofile, setImageProfile] = useState('');
   const [imagePreview, setImagePreview] = useState('');
+  const [imageTemp, setImageTemp] = useState('');
 
   useEffect(() => {
 
@@ -35,11 +49,9 @@ const Profile = () => {
 
   }, [user.data])
 
-  console.log(user);
-
   const handleFile = (e) => {
     setImagePreview(URL.createObjectURL(e.target.files[0]));
-    setImageProfile(e.target.files[0]);
+    setImageTemp(e.target.files[0]);
   }
 
   const handleSubmit = (e) => {
@@ -52,7 +64,7 @@ const Profile = () => {
     }
 
     if(imagePreview){
-      newUser.imageprofile = imageprofile;
+      newUser.imageprofile = imageTemp;
     }
 
     // Build Form Data
@@ -70,8 +82,16 @@ const Profile = () => {
 
   }
 
+  // Delete your account
+  const handleDelete = () => {
+
+    dispatch(deleteProfile());
+    navigate('/login');
+
+  }
+
   if(loading) {
-    return <p>Carregando...</p>
+    return <Loading />;
   }
 
   return (
@@ -84,14 +104,16 @@ const Profile = () => {
         <>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            {imageprofile ? (
-              <><img src={`${uploads}/users/${imageprofile}`} alt={name} className='mb-3' /></>
-            ) : (
-              <><h2 className='h4 mb-3'>Nenhuma imagem de perfil :(</h2></>
+            {!imagePreview ? (
+                imageprofile ? (
+                  <img src={`${uploads}/users/${imageprofile}`} alt={name} className='mb-3' />
+                ) : (
+                  <h4 className="h5 my-3">Nenhuma foto de perfil cadastrada...</h4>
+                )
+              ) : (
+                <img src={imagePreview} alt='Imagem Preview' />
             )}
-            {imagePreview && <img src={imagePreview} alt='Imagem Preview' />}
-
-            <Form.Control type='file' onChange={handleFile} />
+          <Form.Control type='file' onChange={handleFile} />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Nome</Form.Label>
@@ -109,8 +131,13 @@ const Profile = () => {
             <Form.Label>Confirme a Senha</Form.Label>
             <Form.Control type="password" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmpassword || ''} />
           </Form.Group>
-          {!loading && <Button className="btn btn-info" type="submit">Atualizar Perfil</Button>}
-          {loading && <Button className="btn btn-info" type="submit" disabled>Aguarde...</Button>}
+          {!loading && (
+            <Form.Group className="d-flex justify-content-between">
+              <Button className="btn btn-info" type="submit"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /> Atualizar Perfil</Button>
+              <Button className="btn btn-danger" type="button" onClick={handleDelete}><FontAwesomeIcon icon="fa-solid fa-trash-can" /> Excluir Conta</Button>
+            </Form.Group>
+          )}
+          {loading && <Button className="btn btn-info" type="submit" disabled><FontAwesomeIcon icon="fa-regular fa-hourglass" /> Aguarde...</Button>}
         </Form>
         {error && <Message msg={error} type="danger" />}
         {message && <Message msg={message} type="success" />}

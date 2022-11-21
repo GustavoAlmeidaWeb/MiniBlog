@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Row, Form, Button, Col } from 'react-bootstrap';
+import { Row, Form, Button, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate, Link } from 'react-router-dom';
 import { postCreate, getUserPosts, getPost } from '../../slices/postSlice';
@@ -66,7 +66,7 @@ const NewPost = () => {
   }, [message]);
 
   return (
-    <Container>
+    <>
       <Col className='d-flex align-items-center justify-content-between py-3 border-bottom'>
         <h2 className='display-5'>Novo Post</h2>
         <div className="action-new-post">
@@ -101,7 +101,7 @@ const NewPost = () => {
         {error && <Message type='danger' msg={error} />}
         {message && <Message type='success' msg={message} />}
       </Row>
-    </Container>
+    </>
   )
 }
 

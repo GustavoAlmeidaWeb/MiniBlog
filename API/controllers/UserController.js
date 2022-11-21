@@ -70,6 +70,8 @@ module.exports = class UserController {
 
         try {
             
+            await Comment.destroy({ where: { UserId: id }});
+            await Post.destroy({ where: { UserId: id }});
             await User.destroy({ where: { id }});
             res.status(200).json({ message: 'Conta excluída com sucesso.'});
 

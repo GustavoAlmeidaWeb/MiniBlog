@@ -26,6 +26,15 @@ const getUserPosts = async (token) => {
 
 }
 
+// Get posts by User Friend
+const getUserPostsById = async (id, token) => {
+
+  setTokenHeaders(token);
+  const res = await axios.get(`${api}/posts/user/${id}`);
+  return res;
+
+}
+
 // Create new post
 const postCreate = async (data, token) => {
 
@@ -67,6 +76,7 @@ const postService = {
   getPost,
   getAllPosts,
   getUserPosts,
+  getUserPostsById,
   postCreate,
   deletePost,
   updatePost,

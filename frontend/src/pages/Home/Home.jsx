@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getAllPosts } from '../../slices/postSlice';
-import { Card, Container } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { uploads } from '../../utils/config';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Loading from '../../components/Loading';
 
 const Home = ({ auth }) => {
 
@@ -18,11 +19,11 @@ const Home = ({ auth }) => {
   },[dispatch]);
 
   if(loading || !posts || !posts[0].User) {
-    return <p>Carregando...</p>;
+    return <Loading />;
   }
 
   return (
-    <Container>
+    <>
       {posts && (
         posts.map((post) => (
         <Card className="text-center my-3" key={post.id}>
@@ -31,7 +32,7 @@ const Home = ({ auth }) => {
           </Card.Header>
           <Card.Body>
             <Card.Title>{post.title}</Card.Title>
-            <Card.Text><FontAwesomeIcon icon="fa-solid fa-pen-nib" /> <i>Publicado por <strong>{post.User.name}</strong></i></Card.Text>
+            <Card.Text><FontAwesomeIcon icon="fa-solid fa-pen-nib" /> <i>Publicado por <strong><Link className="link-dark text-decoration-none" to={`/user/${post.User.id}`}>{post.User.name}</Link></strong></i></Card.Text>
             {auth ? (
               <Link className='btn btn-info' to={`/posts/${post.id}`}>Ver mais</Link>
             ) : (
@@ -44,7 +45,7 @@ const Home = ({ auth }) => {
         </Card>
         ))
       )}
-    </Container>
+    </>
   )
 }
 

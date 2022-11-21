@@ -89,6 +89,19 @@ module.exports = class PostController {
         res.status(200).json(posts);
     }
 
+    static async getPostsByUserId(req, res) {
+
+        const { id } = req.params;
+
+        const posts = await Post.findAll({
+            where: { UserId: id },
+            order: [['createdAt', 'DESC']],
+        });
+
+        res.status(200).json(posts);
+
+    }
+
     static async updatePost(req, res) {
 
         const { id } = req.params;

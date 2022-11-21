@@ -1,11 +1,14 @@
+// Hooks + Router
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { useDispatch } from 'react-redux';
-import { Navbar, Container, Nav, Button, Form } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Redux
+import { useDispatch } from 'react-redux';
 import { logout, resetAuthStates } from '../slices/authSlice';
+
+// Bootstrap + FontAwesome
+import { Navbar, Container, Nav, Button, Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const NavBar = () => {
 
@@ -22,7 +25,7 @@ const NavBar = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="#">Miniblog</Navbar.Brand>
+        <NavLink className="navbar-brand" to="/">Miniblog</NavLink>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '200px' }} navbarScroll>

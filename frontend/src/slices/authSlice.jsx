@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from '../services/authService';
 
+const user = { data: { token: JSON.parse(localStorage.getItem('miniblog_user'))}};
+
 const initialState = {
-    user: null,
+    user: user || null,
     error: false,
     success: false,
     loading: false,
