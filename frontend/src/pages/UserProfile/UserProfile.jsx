@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserPostsById } from '../../slices/postSlice';
 import { getProfileById } from '../../slices/userSlice';
-import { Card } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../../components/Loading';
 
@@ -25,16 +25,23 @@ const UserProfile = () => {
   if(loading) {
     return <Loading />;
   }
-  console.log(user);
-  console.log(posts);
 
   return (
     <>
     {user && posts && (
-      <>
-      <h2 className="display-6">{user.name}</h2>
-      <p>{posts.length} artigos publicados.</p>
-      </>
+      <Row className="d-flex align-items-center mb-3">
+        <div className="w-25">
+          {user.imageprofile ? (
+            <img className="rounded-circle" src={`${uploads}/users/${user.imageprofile}`} alt={user.name} />
+            ) : (
+            <img className="rounded-circle" src={`${uploads}/users/no-profile-image.svg`} alt={user.name} />
+          )}
+        </div>
+        <div className="w-75">
+          <h2 className="display-6">{user.name}</h2>
+          <p>{posts.length} artigo(s) publicado(s).</p>
+        </div>
+      </Row>
     )}
     {posts && posts.map((post) => (
       <Card className="text-center mb-4" key={post.id}>

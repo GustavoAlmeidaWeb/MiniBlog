@@ -1,8 +1,9 @@
+import { uploads } from '../../utils/config';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getPost, commentCreate } from '../../slices/postSlice';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
 import Message from '../../components/Message';
 import Loading from '../../components/Loading';
@@ -51,10 +52,11 @@ const Post = () => {
   }
 
   return (
-    <Container>
+    <>
       <div>
         {post && (
           <>
+            <img src={`${uploads}/posts/${post.post.imagepost}`} alt={post.post.title} />
             <h1>{post.post.title}</h1>
             <h5>Autor: {post.post.User.name}</h5>
             <p>{post.post.description}</p>
@@ -87,7 +89,7 @@ const Post = () => {
           </>
         )}
       </div>
-    </Container>
+    </>
   )
 }
 
