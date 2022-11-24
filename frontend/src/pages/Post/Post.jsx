@@ -53,42 +53,40 @@ const Post = () => {
 
   return (
     <>
-      <div>
-        {post && (
-          <>
-            <img src={`${uploads}/posts/${post.post.imagepost}`} alt={post.post.title} />
-            <h1>{post.post.title}</h1>
-            <h5>Autor: {post.post.User.name}</h5>
-            <p>{post.post.description}</p>
-            <div>
-              <h3 className='my-3'>{post.comments.length} Comentário(s)</h3>
-              {post.comments.length > 0 ? (
-                <ul>
-                  {post.comments.map((cmt) => (
-                    <li key={cmt.id}>
-                      <p>{cmt.comment}</p>
-                      <p>por: <strong>{cmt.User.name}</strong></p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <>
-                  <h4>Nenhum comentário encontrado</h4>
-                </>
-              )}
-            </div>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3">
-                <Form.Label>Fazer comentário</Form.Label>
-                <Form.Control as="textarea" rows={3} onChange={(e) => setComment(e.target.value)} value={comment || ''} />
-              </Form.Group>
-              <Button variant="info" type="submit">Enviar</Button>
-            </Form>
-            {error && <Message msg={error} type="danger" />}
-            {message && <Message msg={message} type="success" />}
-          </>
-        )}
-      </div>
+      {post && (
+        <>
+          <img src={`${uploads}/posts/${post.post.imagepost}`} alt={post.post.title} />
+          <h1>{post.post.title}</h1>
+          <h5>Autor: {post.post.User.name}</h5>
+          <p>{post.post.description}</p>
+          <div>
+            <h3 className='my-3'>{post.comments.length} Comentário(s)</h3>
+            {post.comments.length > 0 ? (
+              <ul>
+                {post.comments.map((cmt) => (
+                  <li key={cmt.id}>
+                    <p>{cmt.comment}</p>
+                    <p>por: <strong>{cmt.User.name}</strong></p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <>
+                <h4>Nenhum comentário encontrado</h4>
+              </>
+            )}
+          </div>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Fazer comentário</Form.Label>
+              <Form.Control as="textarea" rows={3} onChange={(e) => setComment(e.target.value)} value={comment || ''} />
+            </Form.Group>
+            <Button variant="info" type="submit">Enviar</Button>
+          </Form>
+          {error && <Message msg={error} type="danger" />}
+          {message && <Message msg={message} type="success" />}
+        </>
+      )}
     </>
   )
 }

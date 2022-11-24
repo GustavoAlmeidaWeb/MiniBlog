@@ -1,5 +1,5 @@
 // Bootstrap
-import { Container, Row, Col, Form, Button, FloatingLabel } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, FloatingLabel, Spinner } from 'react-bootstrap';
 
 import { Link } from 'react-router-dom';
 
@@ -58,7 +58,7 @@ const Login = () => {
             </FloatingLabel>
             <Form.Label className="d-grid">
               {!loading && <Button type="submit" size="lg" variant="info">Entrar</Button>}
-              {loading && <Button type="submit" size="lg" variant="info" disabled>Aguarde...</Button>}
+              {loading && <Button type="submit" size="lg" variant="info" disabled><Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" /> Aguarde...</Button>}
               {error && <Message msg={error} type='danger'/>}
               {message && <Message msg={message} type='success'/>}
             </Form.Label>
