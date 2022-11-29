@@ -2,6 +2,7 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
+const { Op } = require('sequelize');
 
 module.exports = class PostController {
     static async getAll(req, res) {
@@ -210,6 +211,30 @@ module.exports = class PostController {
             
             await comment.destroy();
             res.status(200).json({ message: 'Comentário excluído com sucesso.'});
+
+        } catch (error) {
+
+            res.status(422).json({ errors: ['Houve algum problema na requisição, por favor tente mais tarde.']});
+            
+        }
+
+    }
+
+    static async searchPosts(req, res) {
+
+        const { q } = req.query;
+
+        try {
+
+            const posts = await Post.findAll({
+                include: User,
+                where: {
+                    title: {[Op.like]: `%${q}%`},
+                },
+                order: [['createdAt', 'DESC']],
+            });
+            
+            res.status(200).json(posts);
 
         } catch (error) {
 

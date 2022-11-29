@@ -1,10 +1,11 @@
 import { uploads } from '../../utils/config';
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { getPost, commentCreate } from '../../slices/postSlice';
-import { Form, Button } from 'react-bootstrap';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
+import { Form, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Message from '../../components/Message';
 import Loading from '../../components/Loading';
 
@@ -47,7 +48,7 @@ const Post = () => {
 
   }
 
-  if(loading) {
+  if(loading || !post || !post.post.User) {
     return <Loading />;
   }
 
@@ -56,29 +57,39 @@ const Post = () => {
       {post && (
         <>
           <img src={`${uploads}/posts/${post.post.imagepost}`} alt={post.post.title} />
-          <h1>{post.post.title}</h1>
-          <h5>Autor: {post.post.User.name}</h5>
-          <p>{post.post.description}</p>
+          <h1 className='mt-4 display-5'>{post.post.title}</h1>
+          <p className='text-muted fs-6 fst-italic'><FontAwesomeIcon icon="fa-regular fa-user" /> Autor: {post.post.User.name} - <FontAwesomeIcon icon="fa-regular fa-calendar-check" /> Postado em {new Date(post.post.createdAt).toLocaleDateString()} às <FontAwesomeIcon icon="fa-regular fa-clock" /> {new Date(post.post.createdAt).toLocaleTimeString('pt-BR',{ timeStyle: 'short'})}</p>
+          <p className='border-bottom pb-3'>{post.post.description}</p>
           <div>
-            <h3 className='my-3'>{post.comments.length} Comentário(s)</h3>
+            <h3 className='my-3 h5'><FontAwesomeIcon icon="fa-regular fa-comments" /> {post.comments.length} Comentário(s)</h3>
             {post.comments.length > 0 ? (
-              <ul>
+              <>
                 {post.comments.map((cmt) => (
-                  <li key={cmt.id}>
-                    <p>{cmt.comment}</p>
-                    <p>por: <strong>{cmt.User.name}</strong></p>
-                  </li>
+                  <div className='d-flex py-3' key={cmt.id}>
+                    <div className='w-25 px-4'>
+                      {cmt.User.imageprofile ? (
+                        <img className='rounded-circle' src={`${uploads}/users/${cmt.User.imageprofile}`} alt={cmt.User.name} />
+                      ) : (
+                        <img className='rounded-circle' src={`${uploads}/users/no-profile-image.svg`} alt={cmt.User.name} />
+                      )}
+                    </div>
+                    <div className='w-75'>
+                      <p>{cmt.comment}</p>
+                      <p className='text-muted fst-italic'>por: {cmt.User.name}</p>
+                    </div>
+                  </div>
+
                 ))}
-              </ul>
+              </>
             ) : (
               <>
-                <h4>Nenhum comentário encontrado</h4>
+                <p className='fs-6 text-secondary'>Nenhum comentário encontrado</p>
               </>
             )}
           </div>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Fazer comentário</Form.Label>
+              <Form.Label className='fw-bold'>Escrever comentário</Form.Label>
               <Form.Control as="textarea" rows={3} onChange={(e) => setComment(e.target.value)} value={comment || ''} />
             </Form.Group>
             <Button variant="info" type="submit">Enviar</Button>

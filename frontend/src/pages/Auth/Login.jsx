@@ -1,20 +1,17 @@
 // Bootstrap
 import { Container, Row, Col, Form, Button, FloatingLabel, Spinner } from 'react-bootstrap';
 
-import { Link } from 'react-router-dom';
-
 // Components
 import Message from '../../components/Message';
 
-// Hooks
+// Hooks & React Router Dom
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useResetAuthMessage } from '../../hooks/useResetMessage';
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../../slices/authSlice';
-
-
 
 const Login = () => {
 

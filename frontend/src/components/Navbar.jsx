@@ -1,5 +1,6 @@
 // Hooks + Router
-import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 // Redux
@@ -13,13 +14,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const NavBar = () => {
 
   const { auth } = useAuth();
+  const [query, setQuery] = useState('');
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const reset = resetAuthStates();
 
   const handleLogout = () => {
     dispatch(logout());
     dispatch(reset());
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if(query) {
+      navigate(`/search?q=${query}`);
+    }
   }
 
   return (
@@ -43,9 +54,9 @@ const NavBar = () => {
               </>
             )}
           </Nav>
-          <Form className="d-flex">
-            <Form.Control type="search" placeholder="Buscar..." className="me-2" aria-label="Search" />
-            <Button variant="info"><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" /></Button>
+          <Form className="d-flex" onSubmit={handleSearch}>
+            <Form.Control type="search" placeholder="Buscar..." className="me-2" aria-label="Search" onChange={(e) => setQuery(e.target.value)}/>
+            <Button type="submit" variant="info"><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" /></Button>
           </Form>
         </Navbar.Collapse>
       </Container>

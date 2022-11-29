@@ -52,8 +52,6 @@ const EditPost = () => {
 
   }, [post]);
 
-  console.log(post);
-
   const handleSubmit = (e) => {
 
     e.preventDefault();

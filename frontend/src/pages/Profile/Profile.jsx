@@ -103,15 +103,15 @@ const Profile = () => {
       {user.data && (
         <>
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-3 text-center">
             {!imagePreview ? (
                 imageprofile ? (
-                  <img src={`${uploads}/users/${imageprofile}`} alt={name} className='mb-3' />
+                  <img src={`${uploads}/users/${imageprofile}`} alt={name} className='mb-3 w-25 rounded-circle' />
                 ) : (
                   <h4 className="h5 my-3">Nenhuma foto de perfil cadastrada...</h4>
                 )
               ) : (
-                <img src={imagePreview} alt='Imagem Preview' />
+                <img src={imagePreview} alt='Imagem Preview' className='mb-3 w-25 rounded-circle' />
             )}
           <Form.Control type='file' onChange={handleFile} />
           </Form.Group>

@@ -71,6 +71,13 @@ const commentCreate = async (id, comment, token) => {
 
 }
 
+// Search Posts
+const searchPosts = async (query) => {
+
+  const res = await axios.get(`${api}/posts/search?q=${query}`);
+  return res;
+}
+
 // Methods exports
 const postService = {
   getPost,
@@ -81,6 +88,7 @@ const postService = {
   deletePost,
   updatePost,
   commentCreate,
+  searchPosts
 };
 
 export default postService;

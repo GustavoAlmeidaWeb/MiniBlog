@@ -160,6 +160,24 @@ export const commentCreate = createAsyncThunk("comment/create", async (commentDa
   }
 })
 
+// Search Posts
+export const searchPosts = createAsyncThunk("posts/search", async (query, thunkAPI) => {
+
+  try {
+
+    const res = await postService.searchPosts(query);
+
+    return res.data;
+
+  } catch (e) {
+
+    // Check for errors
+    return thunkAPI.rejectWithValue(e.response.data.errors[0]);
+
+  }
+});
+
+
 
 export const postSlice = createSlice({
   name: 'post',
@@ -276,6 +294,16 @@ export const postSlice = createSlice({
         state.loading = false;
         state.success = false;
         state.error = action.payload;
+      })
+      .addCase(searchPosts.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(searchPosts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.posts = action.payload;
       })
   },
 });

@@ -21,6 +21,7 @@ import Notfound from './pages/404/Notfound';
 import EditPost from './pages/EditPost/EditPost';
 import NewPost from './pages/NewPost/NewPost';
 import UserProfile from './pages/UserProfile/UserProfile';
+import Search from './pages/Search/Search';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
         <Container>
           <Routes>
             <Route path='/' element={<Home auth={auth} />} />
+            <Route path='/search' element={<Search auth={auth} />} />
             <Route path='/posts/:id' element={auth ? <Post /> : <Navigate to='/login'/>} />
             <Route path='/posts/edit/:id' element={auth ? <EditPost /> : <Navigate to='/login'/>} />
             <Route path='/posts/create' element={auth ? <NewPost /> : <Navigate to='/login'/>} />
