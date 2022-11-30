@@ -8,7 +8,12 @@ module.exports = class PostController {
     static async getAll(req, res) {
 
         const posts = await Post.findAll({
-            include: User,
+            include: {
+                model: User,
+                attributes: {
+                    exclude: ['password','createdAt','updatedAt'],
+                },
+            },
             order: [['createdAt', 'DESC']],
         });
 
@@ -49,19 +54,59 @@ module.exports = class PostController {
 
     }
 
+    // Teste controller get post by id, está funcionando 
+    static async getPost1(req, res) {
+        
+        const { id } = req.params;
+
+        const post =  await Post.findOne({ 
+            where: { id },
+            include: [{ 
+                model: User,
+                attributes: { exclude: ['password','createdAt','updatedAt'] },
+             },{
+                model: Comment,
+                where: { PostId: id },
+                include: [{
+                    model: User,
+                    attributes: { exclude: ['password','createdAt','updatedAt'] },
+                }],
+                required: false,
+             }],
+            plain: true,
+        });
+
+        if(!post) {
+            return res.status(404).json({ errors: ['Nenhum dado encontrado.']});
+        }
+
+        res.status(200).json(post);
+
+    }
+
     static async getPost(req, res) {
 
         const { id } = req.params;
 
         const currentPost =  await Post.findOne({ 
             where: { id },
-            include: { model: User },
+            include: { 
+                model: User,
+                attributes: {
+                    exclude: ['password','createdAt','updatedAt'],
+                },
+             },
             plain: true,
         });
         
         const currentComments = await Comment.findAll({ 
             where: { PostId: id }, 
-            include: { model: User },
+            include: { 
+                model: User,
+                attributes: {
+                    exclude: ['password','createdAt','updatedAt'],
+                },
+            },
         });
 
         const post = {
@@ -118,21 +163,11 @@ module.exports = class PostController {
         const { title, description, tags } = req.body;
         let image = null;
 
-        if(req.file) {
-            image = req.file.filename;
-        }
-        if(title) {
-            post.title = title;
-        }
-        if(description) {
-            post.description = description;
-        }
-        if(tags) {
-            post.tags = tags;
-        }
-        if(image) {
-            post.imagepost = image;
-        }
+        if(req.file) { image = req.file.filename; }
+        if(title) { post.title = title; }
+        if(description) { post.description = description; }
+        if(tags) { post.tags = tags; }
+        if(image) { post.imagepost = image; }
 
         try {
 
@@ -227,7 +262,12 @@ module.exports = class PostController {
         try {
 
             const posts = await Post.findAll({
-                include: User,
+                include: [{
+                    model: User,
+                    attributes: {
+                        exclude: ['password','createdAt','updatedAt'],
+                    },
+                }],
                 where: {
                     title: {[Op.like]: `%${q}%`},
                 },

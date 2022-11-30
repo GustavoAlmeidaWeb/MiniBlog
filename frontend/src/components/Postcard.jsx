@@ -12,9 +12,9 @@ const Postcard = ({ auth, post, uploads }) => {
         <Card.Title>{post.title}</Card.Title>
         <Card.Text><FontAwesomeIcon icon="fa-solid fa-pen-nib" /> <i>Publicado por <strong><Link className="link-dark text-decoration-none" to={`/user/${post.User.id}`}>{post.User.name}</Link></strong></i></Card.Text>
         {auth ? (
-          <Link className='btn btn-info' to={`/posts/${post.id}`}>Ver mais</Link>
+          <Link className='btn btn-info' to={`/posts/${post.id}`}><FontAwesomeIcon icon="fa-solid fa-plus" /> Ver mais</Link>
         ) : (
-          <Link className='btn btn-info' to='/login'>Login</Link>
+          <Link className='btn btn-info' to='/login'><FontAwesomeIcon icon="fa-solid fa-arrow-right-to-bracket" /> Login</Link>
         )}
       </Card.Body>
       <Card.Footer className="text-muted">

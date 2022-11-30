@@ -71,6 +71,15 @@ const commentCreate = async (id, comment, token) => {
 
 }
 
+// Delete a comment
+const commentDelete = async (id, token) => {
+
+  setTokenHeaders(token);
+  const res = await axios.delete(`${api}/posts/comment/delete/${id}`);
+  return res;
+
+}
+
 // Search Posts
 const searchPosts = async (query) => {
 
@@ -88,6 +97,7 @@ const postService = {
   deletePost,
   updatePost,
   commentCreate,
+  commentDelete,
   searchPosts
 };
 

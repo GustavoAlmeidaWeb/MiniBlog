@@ -1,3 +1,4 @@
+import { uploads } from '../../utils/config';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserPosts, deletePost } from '../../slices/postSlice';
@@ -47,10 +48,14 @@ const Dashboard = () => {
           <>
             {posts.map((post) => (
               <Row key={post.id} className="py-3 border-bottom">
-                <Col xl={8} md={8} sm={8} xs={8}>
-                  <h4 className='h4'>{post.title}</h4>
+                <Col xl={2} md={2} sm={2} xs={2}>
+                  <img src={`${uploads}/posts/${post.imagepost}`} alt={post.title} />
                 </Col>
-                <Col xl={4} md={4} sm={4} xs={4} className="d-flex justify-content-end">
+                <Col xl={7} md={7} sm={7} xs={7}>
+                  <h4 className='h4'><Link className='text-decoration-none link-dark' to={`/posts/${post.id}`}>{post.title}</Link></h4>
+                  <p>Publicado: {new Date(post.createdAt).toLocaleDateString()}</p>
+                </Col>
+                <Col xl={3} md={3} sm={3} xs={3} className="d-flex justify-content-end align-self-center">
                   <OverlayTrigger placement="top" overlay={<Tooltip>Editar Post</Tooltip>}>
                     <Link className="btn btn-info mx-2" to={`/posts/edit/${post.id}`}><FontAwesomeIcon icon="fa-solid fa-pencil" /></Link>
                   </OverlayTrigger>

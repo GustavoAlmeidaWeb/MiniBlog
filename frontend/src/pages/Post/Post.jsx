@@ -2,9 +2,9 @@ import { uploads } from '../../utils/config';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getPost, commentCreate } from '../../slices/postSlice';
+import { getPost, commentCreate, commentDelete } from '../../slices/postSlice';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Message from '../../components/Message';
 import Loading from '../../components/Loading';
@@ -12,6 +12,7 @@ import Loading from '../../components/Loading';
 const Post = () => {
 
   const { post, loading, error, message } = useSelector((state) => state.post);
+  const { user } = useSelector((state) => state.auth);
   const { id } = useParams();
   const dispatch = useDispatch();
   const resetMessage = useResetPostMessage(dispatch);
@@ -34,6 +35,7 @@ const Post = () => {
 
   },[message]);
 
+  // Send comment action
   const handleSubmit = (e) => {
 
     e.preventDefault();
@@ -46,6 +48,12 @@ const Post = () => {
     dispatch(commentCreate(commentData));
     resetMessage();
 
+  }
+
+  // Delete coment action
+  const handleDeleteComment = (idCmt) => {
+    dispatch(commentDelete(idCmt));
+    resetMessage();
   }
 
   if(loading || !post || !post.post.User) {
@@ -74,7 +82,11 @@ const Post = () => {
                       )}
                     </div>
                     <div className='w-75'>
-                      <p>{cmt.comment}</p>
+                      <p>{cmt.comment} {user.data.id === cmt.User.id && (
+                        <OverlayTrigger placement="top" overlay={<Tooltip>Excluir Comentário</Tooltip>}>
+                          <button className='btn btn-danger' onClick={() => handleDeleteComment(cmt.id)}><FontAwesomeIcon icon="fa-regular fa-trash-can" /></button>
+                        </OverlayTrigger>)}
+                      </p>
                       <p className='text-muted fst-italic'>por: {cmt.User.name}</p>
                     </div>
                   </div>
@@ -92,7 +104,9 @@ const Post = () => {
               <Form.Label className='fw-bold'>Escrever comentário</Form.Label>
               <Form.Control as="textarea" rows={3} onChange={(e) => setComment(e.target.value)} value={comment || ''} />
             </Form.Group>
-            <Button variant="info" type="submit">Enviar</Button>
+            <OverlayTrigger placement="top" overlay={<Tooltip>Publicar Comentário</Tooltip>}>
+              <Button variant="info" type="submit"><FontAwesomeIcon icon="fa-solid fa-pen-to-square" /> Enviar</Button>
+            </OverlayTrigger>
           </Form>
           {error && <Message msg={error} type="danger" />}
           {message && <Message msg={message} type="success" />}

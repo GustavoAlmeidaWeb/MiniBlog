@@ -18,6 +18,7 @@ router.post('/:id/comment', authGuard, commentValidation(), validate, PostContro
 router.delete('/comment/delete/:id', authGuard, PostController.deleteComment);
 router.delete('/delete/:id', authGuard, PostController.deletePost);
 router.put('/update/:id', authGuard, imageUpload.single('imagepost'), postUpdateValidation(), validate, PostController.updatePost);
+router.get('/teste/:id', authGuard, PostController.getPost1);
 router.get('/:id', authGuard, PostController.getPost);
 router.get('/', PostController.getAll);
 

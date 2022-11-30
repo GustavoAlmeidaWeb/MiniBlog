@@ -160,6 +160,24 @@ export const commentCreate = createAsyncThunk("comment/create", async (commentDa
   }
 })
 
+// Delete a comment
+export const commentDelete = createAsyncThunk("comment/delete", async (id, thunkAPI) => {
+
+  try {
+
+    const token = thunkAPI.getState().auth.user.data.token;
+    const res = await postService.commentDelete(id, token);
+
+    return res.data;
+
+  } catch (e) {
+
+    // Check for errors
+    return thunkAPI.rejectWithValue(e.response.data.errors[0]);
+
+  }
+})
+
 // Search Posts
 export const searchPosts = createAsyncThunk("posts/search", async (query, thunkAPI) => {
 
@@ -291,6 +309,21 @@ export const postSlice = createSlice({
         state.message = 'Comentário adicionado com sucesso.';
       })
       .addCase(commentCreate.rejected, (state, action) => {
+        state.loading = false;
+        state.success = false;
+        state.error = action.payload;
+      })
+      .addCase(commentDelete.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(commentDelete.fulfilled, (state) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.message = 'Comentário excluído com sucesso.';
+      })
+      .addCase(commentDelete.rejected, (state, action) => {
         state.loading = false;
         state.success = false;
         state.error = action.payload;
