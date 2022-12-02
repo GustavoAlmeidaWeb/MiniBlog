@@ -56,7 +56,7 @@ const Post = () => {
     resetMessage();
   }
 
-  if(loading || !post || !post.post.User) {
+  if(loading || !post || !post.User) {
     return <Loading />;
   }
 
@@ -64,15 +64,15 @@ const Post = () => {
     <>
       {post && (
         <>
-          <img src={`${uploads}/posts/${post.post.imagepost}`} alt={post.post.title} />
-          <h1 className='mt-4 display-5'>{post.post.title}</h1>
-          <p className='text-muted fs-6 fst-italic'><FontAwesomeIcon icon="fa-regular fa-user" /> Autor: {post.post.User.name} - <FontAwesomeIcon icon="fa-regular fa-calendar-check" /> Postado em {new Date(post.post.createdAt).toLocaleDateString()} às <FontAwesomeIcon icon="fa-regular fa-clock" /> {new Date(post.post.createdAt).toLocaleTimeString('pt-BR',{ timeStyle: 'short'})}</p>
-          <p className='border-bottom pb-3'>{post.post.description}</p>
+          <img src={`${uploads}/posts/${post.imagepost}`} alt={post.title} />
+          <h1 className='mt-4 display-5'>{post.title}</h1>
+          <p className='text-muted fs-6 fst-italic'><FontAwesomeIcon icon="fa-regular fa-user" /> Autor: {post.User.name} - <FontAwesomeIcon icon="fa-regular fa-calendar-check" /> Postado em {new Date(post.createdAt).toLocaleDateString()} às <FontAwesomeIcon icon="fa-regular fa-clock" /> {new Date(post.createdAt).toLocaleTimeString('pt-BR',{ timeStyle: 'short'})}</p>
+          <p className='border-bottom pb-3'>{post.description}</p>
           <div>
-            <h3 className='my-3 h5'><FontAwesomeIcon icon="fa-regular fa-comments" /> {post.comments.length} Comentário(s)</h3>
-            {post.comments.length > 0 ? (
+            <h3 className='my-3 h5'><FontAwesomeIcon icon="fa-regular fa-comments" /> {post.Comments.length} Comentário(s)</h3>
+            {post.Comments.length > 0 ? (
               <>
-                {post.comments.map((cmt) => (
+                {post.Comments.map((cmt) => (
                   <div className='d-flex py-3' key={cmt.id}>
                     <div className='w-25 px-4'>
                       {cmt.User.imageprofile ? (
