@@ -6,7 +6,6 @@ import { register } from '../../slices/authSlice';
 
 // Components
 import Message from '../../components/Message';
-
 import { useResetAuthMessage } from '../../hooks/useResetMessage';
 
 const Register = () => {

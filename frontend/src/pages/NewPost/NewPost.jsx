@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Row, Form, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Row, Form, Button, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate, Link } from 'react-router-dom';
 import { postCreate, getUserPosts, getPost } from '../../slices/postSlice';
 import { useResetPostMessage } from '../../hooks/useResetMessage';
 import Message from '../../components/Message';
-import { useEffect } from 'react';
 
 const NewPost = () => {
 
@@ -66,10 +66,15 @@ const NewPost = () => {
   }, [message]);
 
   return (
-    <Container>
-      <Row>
+    <>
+      <Col className='d-flex align-items-center justify-content-between py-3 border-bottom'>
+        <h2 className='display-5'>Novo Post</h2>
+        <div className="action-new-post">
+          <Link className='btn btn-info' to='/dashboard'><FontAwesomeIcon icon="fa-solid fa-arrow-left" /> Voltar a Dashboard</Link>
+        </div>
+      </Col>
+      <Row className='py-3'>
         <Form onSubmit={handleSubmit}>
-
           <Form.Group className="mb-3">
             <Form.Label>Título da Publicação</Form.Label>
             <Form.Control type="text" placeholder="Insira um título para seu post..." onChange={(e) => setTitle(e.target.value)} value={title || ''} />
@@ -90,13 +95,13 @@ const NewPost = () => {
             <Form.Control type="file" onChange={handleFile} />
           </Form.Group>
 
-          {!loading && <Button variant="primary" type="submit">Publicar</Button>}
-          {loading && <Button variant="primary" type="submit" disabled>Aguarde...</Button>}
+          {!loading && <Button variant="info" type="submit">Publicar</Button>}
+          {loading && <Button variant="info" type="submit" disabled>Aguarde...</Button>}
         </Form>
         {error && <Message type='danger' msg={error} />}
         {message && <Message type='success' msg={message} />}
       </Row>
-    </Container>
+    </>
   )
 }
 

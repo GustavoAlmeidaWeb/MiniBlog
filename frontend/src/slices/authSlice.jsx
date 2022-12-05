@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from '../services/authService';
 
+const user = { data: JSON.parse(localStorage.getItem('miniblog_user'))};
+
 const initialState = {
-    user: null,
+    user: user || null,
     error: false,
     success: false,
     loading: false,
@@ -33,7 +35,7 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     const res = await authService.login(user);
 
     if(res.data.id) {
-      localStorage.setItem('miniblog_user', JSON.stringify(res.data.token));
+      localStorage.setItem('miniblog_user', JSON.stringify(res.data));
     }
 
     return res;

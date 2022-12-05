@@ -26,6 +26,15 @@ const getUserPosts = async (token) => {
 
 }
 
+// Get posts by User Friend
+const getUserPostsById = async (id, token) => {
+
+  setTokenHeaders(token);
+  const res = await axios.get(`${api}/posts/user/${id}`);
+  return res;
+
+}
+
 // Create new post
 const postCreate = async (data, token) => {
 
@@ -62,15 +71,34 @@ const commentCreate = async (id, comment, token) => {
 
 }
 
+// Delete a comment
+const commentDelete = async (id, token) => {
+
+  setTokenHeaders(token);
+  const res = await axios.delete(`${api}/posts/comment/delete/${id}`);
+  return res;
+
+}
+
+// Search Posts
+const searchPosts = async (query) => {
+
+  const res = await axios.get(`${api}/posts/search?q=${query}`);
+  return res;
+}
+
 // Methods exports
 const postService = {
   getPost,
   getAllPosts,
   getUserPosts,
+  getUserPostsById,
   postCreate,
   deletePost,
   updatePost,
   commentCreate,
+  commentDelete,
+  searchPosts
 };
 
 export default postService;

@@ -2,12 +2,18 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
+const { Op } = require('sequelize');
 
 module.exports = class PostController {
     static async getAll(req, res) {
 
         const posts = await Post.findAll({
-            include: User,
+            include: {
+                model: User,
+                attributes: {
+                    exclude: ['password','createdAt','updatedAt'],
+                },
+            },
             order: [['createdAt', 'DESC']],
         });
 
@@ -49,26 +55,27 @@ module.exports = class PostController {
     }
 
     static async getPost(req, res) {
-
+        
         const { id } = req.params;
 
-        const currentPost =  await Post.findOne({ 
+        const post =  await Post.findOne({ 
             where: { id },
-            include: { model: User },
+            include: [{ 
+                model: User,
+                attributes: { exclude: ['password','createdAt','updatedAt'] },
+             },{
+                model: Comment,
+                where: { PostId: id },
+                include: [{
+                    model: User,
+                    attributes: { exclude: ['password','createdAt','updatedAt'] },
+                }],
+                required: false,
+             }],
             plain: true,
         });
-        
-        const currentComments = await Comment.findAll({ 
-            where: { PostId: id }, 
-            include: { model: User },
-        });
 
-        const post = {
-            post: currentPost,
-            comments: currentComments,
-        }
-
-        if(!currentPost) {
+        if(!post) {
             return res.status(404).json({ errors: ['Nenhum dado encontrado.']});
         }
 
@@ -89,6 +96,19 @@ module.exports = class PostController {
         res.status(200).json(posts);
     }
 
+    static async getPostsByUserId(req, res) {
+
+        const { id } = req.params;
+
+        const posts = await Post.findAll({
+            where: { UserId: id },
+            order: [['createdAt', 'DESC']],
+        });
+
+        res.status(200).json(posts);
+
+    }
+
     static async updatePost(req, res) {
 
         const { id } = req.params;
@@ -104,21 +124,11 @@ module.exports = class PostController {
         const { title, description, tags } = req.body;
         let image = null;
 
-        if(req.file) {
-            image = req.file.filename;
-        }
-        if(title) {
-            post.title = title;
-        }
-        if(description) {
-            post.description = description;
-        }
-        if(tags) {
-            post.tags = tags;
-        }
-        if(image) {
-            post.imagepost = image;
-        }
+        if(req.file) { image = req.file.filename; }
+        if(title) { post.title = title; }
+        if(description) { post.description = description; }
+        if(tags) { post.tags = tags; }
+        if(image) { post.imagepost = image; }
 
         try {
 
@@ -197,6 +207,35 @@ module.exports = class PostController {
             
             await comment.destroy();
             res.status(200).json({ message: 'Comentário excluído com sucesso.'});
+
+        } catch (error) {
+
+            res.status(422).json({ errors: ['Houve algum problema na requisição, por favor tente mais tarde.']});
+            
+        }
+
+    }
+
+    static async searchPosts(req, res) {
+
+        const { q } = req.query;
+
+        try {
+
+            const posts = await Post.findAll({
+                include: [{
+                    model: User,
+                    attributes: {
+                        exclude: ['password','createdAt','updatedAt'],
+                    },
+                }],
+                where: {
+                    title: {[Op.like]: `%${q}%`},
+                },
+                order: [['createdAt', 'DESC']],
+            });
+            
+            res.status(200).json(posts);
 
         } catch (error) {
 

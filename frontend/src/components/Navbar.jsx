@@ -1,16 +1,22 @@
-import { NavLink } from 'react-router-dom';
+// Hooks + Router
+import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { useDispatch } from 'react-redux';
-import { Navbar, Container, Nav, Button, Form } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Redux
+import { useDispatch } from 'react-redux';
 import { logout, resetAuthStates } from '../slices/authSlice';
+
+// Bootstrap + FontAwesome
+import { Navbar, Container, Nav, Button, Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const NavBar = () => {
 
   const { auth } = useAuth();
+  const [query, setQuery] = useState('');
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const reset = resetAuthStates();
 
@@ -19,10 +25,18 @@ const NavBar = () => {
     dispatch(reset());
   }
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if(query) {
+      navigate(`/search?q=${query}`);
+    }
+  }
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="#">Miniblog</Navbar.Brand>
+        <NavLink className="navbar-brand" to="/">Miniblog</NavLink>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '200px' }} navbarScroll>
@@ -40,9 +54,9 @@ const NavBar = () => {
               </>
             )}
           </Nav>
-          <Form className="d-flex">
-            <Form.Control type="search" placeholder="Buscar..." className="me-2" aria-label="Search" />
-            <Button variant="info"><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" /></Button>
+          <Form className="d-flex" onSubmit={handleSearch}>
+            <Form.Control type="search" placeholder="Buscar..." className="me-2" aria-label="Search" onChange={(e) => setQuery(e.target.value)}/>
+            <Button type="submit" variant="info"><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" /></Button>
           </Form>
         </Navbar.Collapse>
       </Container>
@@ -50,4 +64,4 @@ const NavBar = () => {
   )
 }
 
-export default NavBar
+export default NavBar;

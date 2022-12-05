@@ -1,9 +1,11 @@
-import React from 'react'
+import { Container, Spinner } from 'react-bootstrap';
 
 const Loading = () => {
   return (
-    <div>Loading</div>
+    <Container className='text-center py-4'>
+      <Spinner animation="border" />
+    </Container>
   )
 }
 
-export default Loading
+export default Loading;

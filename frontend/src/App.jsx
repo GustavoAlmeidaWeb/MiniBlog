@@ -8,6 +8,7 @@ import { useAuth } from './hooks/useAuth';
 // Components
 import NavBar from './components/Navbar';
 import Footer from './components/Footer';
+import Loading from './components/Loading';
 
 // Pages
 import Home from './pages/Home/Home';
@@ -19,6 +20,8 @@ import Profile from './pages/Profile/Profile';
 import Notfound from './pages/404/Notfound';
 import EditPost from './pages/EditPost/EditPost';
 import NewPost from './pages/NewPost/NewPost';
+import UserProfile from './pages/UserProfile/UserProfile';
+import Search from './pages/Search/Search';
 
 
 function App() {
@@ -26,7 +29,7 @@ function App() {
   const { auth, loading } = useAuth();
 
   if(loading) {
-    return <p>Carregando....</p>
+    return <Loading />;
   }
 
   return (
@@ -35,10 +38,12 @@ function App() {
       <Container fluid className="App py-4">
         <Container>
           <Routes>
-            <Route path='/' element={<Home />} />
+            <Route path='/' element={<Home auth={auth} />} />
+            <Route path='/search' element={<Search auth={auth} />} />
             <Route path='/posts/:id' element={auth ? <Post /> : <Navigate to='/login'/>} />
             <Route path='/posts/edit/:id' element={auth ? <EditPost /> : <Navigate to='/login'/>} />
             <Route path='/posts/create' element={auth ? <NewPost /> : <Navigate to='/login'/>} />
+            <Route path='/user/:id' element={auth ? <UserProfile /> : <Navigate to='/login'/>} />
             <Route path='/dashboard' element={auth ? <Dashboard /> : <Navigate to='/login'/>} />
             <Route path='/my-profile' element={auth ? <Profile /> : <Navigate to='/login'/>} />
             <Route path='/register' element={!auth ? <Register /> : <Navigate to='/'/>} />

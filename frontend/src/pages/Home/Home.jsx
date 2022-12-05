@@ -1,39 +1,41 @@
+// URLS
+import { uploads } from '../../utils/config';
+
+// Hooks
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosts } from '../../slices/postSlice';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
 
-const Home = () => {
+// Components
+import Loading from '../../components/Loading';
+import Postcard from '../../components/Postcard';
 
-  const { posts, loading, error } = useSelector((state) => state.post);
-  const { user } = useSelector((state) => state.auth);
+const Home = ({ auth }) => {
+
+  const { posts, loading } = useSelector((state) => state.post);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllPosts());
-  }, [dispatch]);
 
-  console.log(localStorage.getItem('miniblog_user'));
+    dispatch(getAllPosts());
+
+  },[dispatch]);
+
+  if(loading || !posts || !posts[0].User) {
+    return <Loading />;
+  }
 
   return (
-    <div>
-      <ul>
+    <>
       {posts && (
         posts.map((post) => (
-          <li key={post.id}>
-            <h4>{post.title}</h4>
-            {user ? (
-              <Link to={`/posts/${post.id}`}>Ver mais</Link>
-            ) : (
-              <Link to='/login'>Login</Link>
-            )}
-          </li>
+        <Postcard auth={auth} post={post} uploads={uploads} key={post.id} />
         ))
       )}
-      </ul>
-    </div>
+    </>
   )
 }
 
-export default Home
+export default Home;
