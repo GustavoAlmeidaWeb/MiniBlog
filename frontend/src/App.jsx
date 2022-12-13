@@ -1,8 +1,6 @@
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
-
 import { Container } from 'react-bootstrap';
-
 import { useAuth } from './hooks/useAuth';
 
 // Components

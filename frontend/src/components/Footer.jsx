@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <Container fluid className="bg-dark py-5">
       <Row>
-        <p className='text-light text-center'>2022 &copy; Miniblog. Todos os direitos reservados.</p>
+        <p className='text-light text-center'>{new Date().getFullYear()} &copy; Miniblog. Todos os direitos reservados.</p>
       </Row>
     </Container>
   )

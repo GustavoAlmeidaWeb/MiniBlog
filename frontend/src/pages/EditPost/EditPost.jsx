@@ -43,10 +43,10 @@ const EditPost = () => {
 
     if(post !== null){
 
-      setTitle(post.post.title);
-      setDescription(post.post.description);
-      setTags(post.post.tags);
-      setImagePost(post.post.imagepost);
+      setTitle(post.title);
+      setDescription(post.description);
+      setTags(post.tags);
+      setImagePost(post.imagepost);
 
     }
 

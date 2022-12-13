@@ -131,15 +131,17 @@ module.exports = class UserController {
 
         try {
             
-            const user = await User.findOne({ where: { id: id }});
-            const user_data = {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                imageprofile: user.imageprofile,
-            }
+            const user = await User.findOne({ 
+                where: { id: id }, 
+                raw: true,
+                attributes: {
+                    exclude: ['password'],
+                },
+            });
 
-            res.status(200).json(user_data);
+            if(!user) return res.status(404).json({ errors: ['Usuário não encontrado.'] });
+
+            res.status(200).json(user);
 
         } catch (error) {
             
