@@ -244,4 +244,18 @@ module.exports = class PostController {
         }
 
     }
+
+    static async allCommentsByUser(req, res) {
+
+        const { user } = req;
+
+        try {
+
+            const comments = await Comment.findAll({ where: { UserId: user.id }});
+            res.status(200).json(comments);
+
+        } catch (error) {
+            res.status(422).json({ errors: ['Houve algum problema na requisição, por favor tente mais tarde.']});
+        }
+    }
 }

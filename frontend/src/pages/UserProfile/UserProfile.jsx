@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserPostsById } from '../../slices/postSlice';
 import { getProfileById } from '../../slices/userSlice';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loading from '../../components/Loading';
 

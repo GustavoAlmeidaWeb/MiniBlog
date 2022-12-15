@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const helmet = require('helmet');
 
 // Import Routes
 const router = require('./routes/Router.js');
@@ -24,6 +25,9 @@ app.use(cors({ credentials: true, origin: process.env.CORS_URL }));
 
 // Upload Dir
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
+// Helmet 
+app.use(helmet());
 
 // Use Routes
 app.use(router);
